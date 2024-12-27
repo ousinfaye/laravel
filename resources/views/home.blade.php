@@ -1,109 +1,190 @@
 @extends('layouts.app')
 
 @section('content')
-    <!-- En-tête avec Carrousel -->
-    <header class="mb-4">
-        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="https://via.placeholder.com/1200x400" class="d-block w-100" alt="Carrousel 1">
-                    <div class="carousel-caption">
-                        <h5>Des Solutions Logicielles Sur Mesure</h5>
-                        <p>Adaptées aux besoins de votre entreprise.</p>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="https://via.placeholder.com/1200x400" class="d-block w-100" alt="Carrousel 2">
+    <style>
+        #navbar {
+            font-weight: bold;
+            padding-top: 30px;
+            background-color: #066170;
+            margin-top: -7px;
+            width: 100%;
+            height: 80px;
+        }
+
+        .navbar-brand {
+            margin-top: 18px;
+        }
+
+        .nav-link, .lien-nav {
+            margin-top: 5px;
+            color: #FF5733;
+            font-size: 15px;
+            font-family: "Arial Black";
+        }
+
+        .kpi-box {
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .kpi-box h4 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .project-card {
+            margin-bottom: 20px;
+        }
+
+        .cards-column {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+        }
+
+        .chart-column {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50%;
+        }
+
+        .row-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .card {
+            margin-top: 20px;
+            background-color: #066170;
+            font-weight: bold;
+            color: #FFFFFF;
+        }
+
+        .card-text-statut {
+            margin-top: -2px;
+            text-align: right;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background-color: #FFFFFF;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 5px;
+        }
+
+        .progress {
+            background-color: #FF5733;
+            height: 100%;
+        }
+
+        .filter-form {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .pagination {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+
+    <div class="container">
+        <!-- Indicateurs Clés -->
+        <div class="row">
+            <div class="col-md-3">
+                <div class="alert alert-info kpi-box">
+                    <h4>Total Projets</h4>
+                    <p>{{$nbprojects}}</p>
                 </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                <span class="carousel-control-next-icon"></span>
-            </button>
+            <div class="col-md-3">
+                <div class="alert alert-success kpi-box">
+                    <h4>Total Tâches</h4>
+                    <p>{{$nbtasks}}</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="alert alert-warning kpi-box">
+                    <h4>Total Équipes</h4>
+                    <p>{{$nbequip}}</p>
+                </div>
+            </div>
         </div>
-    </header>
 
-    <!-- Contenu Principal -->
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar Gauche -->
-            <aside class="col-md-2 bg-light p-3">
-                <h5>Liens Rapides</h5>
-                <ul class="list-unstyled">
-                    <li><a href="#">Accueil</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Blog</a></li>
-                </ul>
-                <h6 class="mt-4">Actualités</h6>
-                <p>Nouvelle version de notre logiciel ERP bientôt disponible !</p>
-            </aside>
+        <!-- Formulaire de Filtrage -->
+        <form method="GET" action="{{ route('projects.index') }}" class="filter-form">
+            <select name="statut" class="form-control">
+                <option value="">-- Filtrer par Statut --</option>
+                <option value="En_cours">En cours</option>
+                <option value="Pas commencé">Pas commencé</option>
+                <option value="Terminé">Terminé</option>
+            </select>
+            <select name="equipe" class="form-control">
+                <option value="">-- Filtrer par Équipe --</option>
+                @foreach($equipes as $equipe)
+                    <option value="{{ $equipe->id }}">{{ $equipe->nom }}</option>
+                @endforeach
+            </select>
+            <button type="submit" class="btn btn-primary">Filtrer</button>
+        </form>
 
-            <!-- Contenu Principal -->
-            <main class="col-md-8">
-                <!-- Section Présentation -->
-                <section class="text-center mb-4">
-                    <h2>Bienvenue chez SoftWeb Solution</h2>
-                    <p>Votre partenaire idéal pour des logiciels innovants.</p>
-                </section>
-
-                <!-- Section Services -->
-                <section class="services text-center mb-4">
-                    <h3>Nos Services</h3>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="card shadow-sm">
-                                <i class="bi bi-laptop display-4"></i>
-                                <h5>Développement Web</h5>
-                                <p>Des sites performants et sur-mesure.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card shadow-sm">
-                                <i class="bi bi-phone display-4"></i>
-                                <h5>Applications Mobiles</h5>
-                                <p>Des solutions mobiles efficaces.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card shadow-sm">
-                                <i class="bi bi-pc-display display-4"></i>
-                                <h5>Applications Desktop</h5>
-                                <p>Des logiciels de bureau adaptés à vos besoins.</p>
-                            </div>
+        <!-- Cartes pour les Projets -->
+        <div class="row-container">
+            <div class="cards-column">
+                @foreach($projectTAsk as $projet)
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $projet->nom }}</h5>
+                            <p class="card-text">Tâches : {{ $projet->taches_count }}</p>
+                            @if($projet->statute == "En_cours")
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 50%;"></div>
+                                </div>
+                            @elseif($projet->statute == "Pas commencé")
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 10%;"></div>
+                                </div>
+                            @endif
+                            <p class="card-text-statut">Statut : {{ $projet->statute }}</p>
                         </div>
                     </div>
-                </section>
+                @endforeach
 
-                <!-- Section Témoignages -->
-                <section class="testimonials text-center mb-4">
-                    <h3>Témoignages Clients</h3>
-                    <div id="testimonialCarousel" class="carousel slide">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <p>"Excellent service, très professionnel !"</p>
-                                <h6>- Jean Dupont</h6>
-                            </div>
-                            <div class="carousel-item active">
-                                <p>"Des professionnels et passionnés"</p>
-                                <h6>- Jean</h6>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </main>
+                <!-- Pagination -->
+                <div class="pagination">
+                    {{ $projectTAsk->links() }}
+                </div>
+            </div>
 
-            <!-- Sidebar Droite -->
-            <aside class="col-md-2 bg-light p-3">
-                <h5>Contact Rapide</h5>
-                <form>
-                    <input type="text" class="form-control mb-2" placeholder="Nom">
-                    <input type="email" class="form-control mb-2" placeholder="Email">
-                    <textarea class="form-control mb-2" placeholder="Message"></textarea>
-                    <button class="btn btn-primary">Envoyer</button>
-                </form>
-            </aside>
+            <!-- Graphique -->
+            <div class="chart-column">
+                <canvas id="tasksChart" style="max-width: 500px;"></canvas>
+            </div>
         </div>
     </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('tasksChart').getContext('2d');
+        var tasksChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Pas commencé', 'En cours', 'Terminées'],
+                datasets: [{
+                    data: [{{$nbprojetPasCommence}}, {{$nbprojetencours}}, {{$nbprojetermine}}],
+                    backgroundColor: ['rgb(163, 207, 186.6)', 'rgb(255, 242.6, 205.4)', 'rgb(158.2, 233.8, 249)'],
+                }]
+            }
+        });
+    </script>
 @endsection
