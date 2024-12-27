@@ -85,6 +85,10 @@
                                 <p>"Excellent service, très professionnel !"</p>
                                 <h6>- Jean Dupont</h6>
                             </div>
+                            <div class="carousel-item active">
+                                <p>"Des professionnels"</p>
+                                <h6>- Jean</h6>
+                            </div>
                         </div>
                     </div>
                 </section>
