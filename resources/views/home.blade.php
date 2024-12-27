@@ -86,7 +86,7 @@
                                 <h6>- Jean Dupont</h6>
                             </div>
                             <div class="carousel-item active">
-                                <p>"Des professionnels"</p>
+                                <p>"Des professionnels et passionnés"</p>
                                 <h6>- Jean</h6>
                             </div>
                         </div>
